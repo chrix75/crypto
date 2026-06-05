@@ -1,4 +1,4 @@
-module github.com/chrix75/rypto
+module github.com/chrix75/crypto
 
 go 1.26
 

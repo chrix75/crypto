@@ -12,7 +12,7 @@ A simple Go library for AES-GCM symmetric encryption and decryption.
 ## Installation
 
 ```bash
-go get github.com/chrix75/rypto
+go get github.com/chrix75/crypto
 ```
 
 ## Usage
@@ -22,7 +22,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/chrix75/rypto"
+	"github.com/chrix75/crypto"
 )
 
 func main() {
