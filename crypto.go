@@ -6,10 +6,8 @@ package crypto
 import (
 	"crypto/aes"
 	"crypto/cipher"
-	"crypto/rand"
 	"encoding/hex"
 	"errors"
-	"io"
 )
 
 // SecretKey is the symmetric key used for AES encryption and decryption.
@@ -18,8 +16,8 @@ import (
 var SecretKey []byte
 
 // Encrypt encrypts the given plaintext using AES-GCM with the configured SecretKey.
-// It generates a random nonce for each encryption, ensuring that encrypting the
-// same plaintext multiple times produces different ciphertexts.
+// It uses a deterministic nonce derived from the key to ensure that encrypting the
+// same plaintext multiple times produces the same ciphertext.
 // Returns the ciphertext as a hex-encoded string.
 // Returns an error if SecretKey is not set or has an invalid size.
 func Encrypt(plaintext string) (string, error) {
@@ -37,10 +35,10 @@ func Encrypt(plaintext string) (string, error) {
 		return "", err
 	}
 
-	nonce := make([]byte, gcm.NonceSize())
-	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
-		return "", err
-	}
+	// Use a deterministic nonce by taking the first NonceSize bytes of the key
+	nonceSize := gcm.NonceSize()
+	nonce := make([]byte, nonceSize)
+	copy(nonce, SecretKey[:nonceSize])
 
 	ciphertext := gcm.Seal(nonce, nonce, []byte(plaintext), nil)
 	return hex.EncodeToString(ciphertext), nil

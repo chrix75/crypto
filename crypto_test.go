@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 // TestEncryptDecrypt verifies that encryption and decryption work correctly
@@ -33,6 +34,18 @@ func TestEncryptEmptyKey(t *testing.T) {
 	SecretKey = nil
 	_, err := Encrypt("test")
 	assert.Error(t, err)
+}
+
+// TestEncryptEmptyKey verifies that encryption fails when SecretKey is not set.
+func TestDeterministicEncryption(t *testing.T) {
+	SecretKey = []byte("8nFMVCEPqgiwy3ApkL1IqnqkcEJlVmRt")
+	encrypt1, err := Encrypt("test")
+	require.NoError(t, err)
+
+	encrypt2, err := Encrypt("test")
+	require.NoError(t, err)
+
+	assert.Equal(t, encrypt1, encrypt2)
 }
 
 // TestDecryptEmptyKey verifies that decryption fails when SecretKey is not set.
