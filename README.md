@@ -5,7 +5,7 @@ A simple Go library for AES-GCM symmetric encryption and decryption.
 ## Features
 
 - **AES-GCM encryption**: Authenticated encryption providing both confidentiality and integrity
-- **Random nonce generation**: Each encryption produces a unique ciphertext
+- **Deterministic nonce generation**: The nonce is derived from the SecretKey, ensuring the same plaintext produces the same ciphertext
 - **Hex encoding**: Ciphertexts are hex-encoded for easy storage and transmission
 - **Key size validation**: Supports AES-128 (16 bytes), AES-192 (24 bytes), and AES-256 (32 bytes)
 
@@ -72,7 +72,7 @@ Decrypts the given hex-encoded ciphertext using AES-GCM with the configured `Sec
 - **Key management**: The security of this library depends on the secrecy of `SecretKey`. Never hardcode keys in source code or commit them to version control.
 - **Key rotation**: Regularly rotate encryption keys according to your security policy.
 - **Key size**: Always use the largest key size practical for your use case (preferably AES-256 with 32-byte keys).
-- **Randomness**: The library uses `crypto/rand` for nonce generation, which is cryptographically secure.
+- **Deterministic nonce**: The nonce is derived from the SecretKey using a deterministic approach, ensuring reproducible encryption results.
 
 ## Examples
 
